@@ -461,7 +461,7 @@ export default function Home() {
           <button onClick={createReportFingerprint} disabled={!addressAnalysis}>{lang === "zh" ? "生成报告指纹" : "Create report fingerprint"}</button>
           <code>{reportFingerprint || (lang === "zh" ? "完成上方链上分析后生成" : "Generated after a live analysis")}</code>
           <a href="/deploy">{lang === "zh" ? "打开主网部署助手 →" : "Open mainnet deployment assistant →"}</a>
-          <a href={`https://hashkey.blockscout.com/address/${VERIFIED_REGISTRY_ADDRESS}`} target="_blank" rel="noreferrer">{lang === "zh" ? "查看已核验主网合约 ↗" : "View verified mainnet registry ↗"}</a>
+          <a href={`https://hashkey.blockscout.com/address/${VERIFIED_REGISTRY_ADDRESS}`} target="_blank" rel="noreferrer">{lang === "zh" ? "查看主网合约 ↗" : "View mainnet registry ↗"}</a>
         </div>
       </section>
 

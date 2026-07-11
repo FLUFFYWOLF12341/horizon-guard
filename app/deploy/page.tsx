@@ -147,7 +147,7 @@ export default function DeployPage() {
         </div>
       </section>
       <div className="deploy-status" role="status"><i />{status}</div>
-      <div className="deploy-status verified-status" role="note"><i />{lang === "zh" ? "已核验主网合约：" : "Verified mainnet registry: "}<a href={`https://hashkey.blockscout.com/address/${VERIFIED_REGISTRY_ADDRESS}`} target="_blank" rel="noreferrer">{VERIFIED_REGISTRY_ADDRESS}</a></div>
+      <div className="deploy-status verified-status" role="note"><i />{lang === "zh" ? "已确认主网部署：" : "Confirmed mainnet deployment: "}<a href={`https://hashkey.blockscout.com/address/${VERIFIED_REGISTRY_ADDRESS}`} target="_blank" rel="noreferrer">{VERIFIED_REGISTRY_ADDRESS}</a></div>
       <aside className="deploy-warning">{lang === "zh" ? "安全提醒：不要向任何人发送助记词或私钥。此页面只通过钱包标准接口请求连接和部署确认。" : "Safety: never share a seed phrase or private key. This page only uses the wallet's standard connection and transaction confirmation interface."}</aside>
     </main>
   );
