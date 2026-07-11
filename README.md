@@ -1,98 +1,74 @@
-# vinext-starter
+# Horizon Guard
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+**A bilingual, explainable DeFi risk assistant for HashKey Chain.**
 
-## Prerequisites
+Horizon Guard helps newcomers understand smart-contract and transaction risks before they act. It turns observable on-chain signals into a risk score, plain-language explanations, and safer next steps. The prototype combines live HashKey Chain RPC analysis, educational scenarios, a 72-hour strategy sandbox, wallet/network detection, and tamper-evident report fingerprints.
 
-- Node.js `>=22.13.0`
+> Horizon Guard is an educational risk-assistance prototype, not a security audit or financial advice. Its analysis is deterministic and explainable; it does not claim to use external security feeds or an LLM in the current build.
 
-## Quick Start
+## Hackathon track
+
+Primary submission track: **AI** (AI-ready explainable risk assistance for on-chain finance).
+
+## What works today
+
+- Chinese/English interface
+- Three explainable scenarios: unlimited approval, concentrated RWA exposure, and a lower-risk stablecoin interaction
+- Live structural analysis using the HashKey Chain testnet RPC
+- Detection of contract bytecode, code size, EIP-1967 proxy storage, common ERC-20 selectors, and near-unlimited approvals
+- Read-only wallet connection and HashKey network switching
+- 72-hour educational risk sandbox and safer-action guidance
+- SHA-256 report fingerprint generation
+- A non-custodial report registry deployed on HashKey Chain Mainnet
+
+## Mainnet deployment
+
+`HorizonRiskRegistry` is deployed on **HashKey Chain Mainnet (Chain ID 177)**.
+
+- Contract: [`0xc0043c0ecdc68401366d92bb46fd5721a4096153`](https://hashkey.blockscout.com/address/0xc0043c0ecdc68401366d92bb46fd5721a4096153)
+- Source: [`contracts/HorizonRiskRegistry.sol`](contracts/HorizonRiskRegistry.sol)
+
+The registry stores report hashes and metadata only. It cannot hold tokens, grant approvals, or transfer user funds.
+
+## Architecture
+
+- React 19 + TypeScript
+- vinext / Vite full-stack runtime
+- HashKey Chain JSON-RPC
+- Browser wallet provider for connection and network requests
+- Solidity `^0.8.24` report registry
+
+The live analyzer currently uses HashKey Chain **testnet (Chain ID 133)** for repeatable read-only analysis. The report registry is deployed on **mainnet**, satisfying the hackathon deployment requirement.
+
+## Run locally
+
+Requirements: Node.js `>=22.13.0`
 
 ```bash
 npm install
 npm run dev
+```
+
+Then open the local URL printed in the terminal (normally `http://localhost:3000`).
+
+Verification:
+
+```bash
 npm run build
+npm test
 ```
 
-This starter does not use `wrangler.jsonc`.
+## Important limitations
 
-## Included Shape
+- Structural RPC analysis is not a full smart-contract audit.
+- The 72-hour sandbox is an educational scenario model, not a price prediction.
+- GoPlus/PeckShield feeds, LLM-generated explanations, compliant-pool credentials, and one-click approval revocation are future work, not current features.
+- HSP integration is not claimed in this version.
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+## Safety and privacy
 
-## Workspace Auth Headers
+The app never asks for a seed phrase or private key. The homepage is read-only. A transaction signature is requested only if the user deliberately uses the deployment page and confirms it in their wallet.
 
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
+## License
 
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+MIT

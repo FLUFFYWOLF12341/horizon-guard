@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { HORIZON_RISK_REGISTRY_BYTECODE } from "./bytecode";
 
 type EthereumProvider = {
@@ -113,7 +114,7 @@ export default function DeployPage() {
   return (
     <main className="deploy-shell">
       <header className="deploy-header">
-        <a href="/">← Horizon Guard</a>
+        <Link href="/">← Horizon Guard</Link>
         <div className="language-switch">
           <button className={lang === "zh" ? "active" : ""} onClick={() => setLang("zh")}>中文</button>
           <button className={lang === "en" ? "active" : ""} onClick={() => setLang("en")}>EN</button>
